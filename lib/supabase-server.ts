@@ -14,11 +14,12 @@ function getSupabaseServer(): SupabaseClient {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   // 详细的环境变量调试日志
-  console.log('[Supabase Server] 环境变量检查:');
-  console.log('- NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? `已设置 (${supabaseUrl.substring(0, 20)}...)` : '未设置');
-  console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? `已设置 (长度: ${supabaseAnonKey.length})` : '未设置');
+  console.log('[Supabase Server] 环境变量检查 (v2):');
+  console.log('- NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? `已设置 (${supabaseUrl.substring(0, 30)}...)` : '未设置');
+  console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? `已设置 (长度: ${supabaseAnonKey.length}, 前缀: ${supabaseAnonKey.substring(0, 10)}...)` : '未设置');
   console.log('- NODE_ENV:', process.env.NODE_ENV);
   console.log('- VERCEL:', process.env.VERCEL);
+  console.log('- 环境变量来源检查:', process.env.VERCEL ? 'Vercel 生产环境' : '本地开发环境');
 
   // 运行时验证环境变量
   if (!supabaseUrl || !supabaseAnonKey) {
