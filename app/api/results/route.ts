@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import type { ResultRecord } from '@/lib/types';
 
 export async function GET() {
   try {
@@ -13,20 +14,23 @@ export async function GET() {
       throw new Error(`查询失败: ${error.message}`);
     }
 
+    // 类型断言
+    const typedResults = (results || []) as ResultRecord[];
+
     // 计算汇总信息
-    const totalEmployees = results?.length || 0;
-    const totalCompanyFee = results?.reduce(
+    const totalEmployees = typedResults.length;
+    const totalCompanyFee = typedResults.reduce(
       (sum, r) => sum + Number(r.company_fee),
       0
-    ) || 0;
+    );
 
-    const cityName = results && results.length > 0 ? results[0].city_name : '';
-    const year = results && results.length > 0 ? results[0].year : 0;
+    const cityName = typedResults.length > 0 ? typedResults[0].city_name : '';
+    const year = typedResults.length > 0 ? typedResults[0].year : 0;
 
     return NextResponse.json({
       success: true,
       data: {
-        results: results || [],
+        results: typedResults,
         metadata: {
           totalEmployees,
           totalCompanyFee: parseFloat(totalCompanyFee.toFixed(2)),
