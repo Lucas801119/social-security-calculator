@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from './types/database';
 
 // 创建 Supabase 客户端
 export function getSupabaseClient() {
