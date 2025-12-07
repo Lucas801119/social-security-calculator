@@ -13,8 +13,17 @@ function getSupabaseServer(): SupabaseClient {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  // 详细的环境变量调试日志
+  console.log('[Supabase Server] 环境变量检查:');
+  console.log('- NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? `已设置 (${supabaseUrl.substring(0, 20)}...)` : '未设置');
+  console.log('- NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? `已设置 (长度: ${supabaseAnonKey.length})` : '未设置');
+  console.log('- NODE_ENV:', process.env.NODE_ENV);
+  console.log('- VERCEL:', process.env.VERCEL);
+
   // 运行时验证环境变量
   if (!supabaseUrl || !supabaseAnonKey) {
+    const errorMsg = `Supabase 环境变量未设置。URL: ${!!supabaseUrl}, Key: ${!!supabaseAnonKey}`;
+    console.error('[Supabase Server] 错误:', errorMsg);
     throw new Error(
       'Supabase 环境变量未设置。请在 Vercel 中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_ANON_KEY'
     );
