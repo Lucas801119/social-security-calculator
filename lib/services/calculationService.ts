@@ -1,4 +1,4 @@
-import { supabase } from '../supabase';
+import { supabaseServer as supabase } from '../supabase-server';
 import { validateYearConsistency } from '../validation/yearValidator';
 import { calculateAverageSalaries } from '../calculators/salaryCalculator';
 import { calculateContributionBase } from '../calculators/baseCalculator';
