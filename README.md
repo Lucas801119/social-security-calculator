@@ -139,6 +139,10 @@ MIT License
 
 由 Claude Code 协助开发
 
+## 🚀 部署
+
+本项目已部署到 Vercel。环境变量配置已完成。
+
 ---
 
 **💡 提示**：首次使用前请确保已正确配置 Supabase 数据库。
