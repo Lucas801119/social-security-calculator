@@ -104,7 +104,7 @@ export async function executeCalculation(): Promise<ApiResponse<CalculationData>
     console.log('[计算服务] 步骤 7: 插入新计算结果...');
     const { error: insertError } = await supabase
       .from('results')
-      .insert(results);
+      .insert(results as any);
 
     if (insertError) {
       throw new Error(`插入结果失败: ${insertError.message}`);

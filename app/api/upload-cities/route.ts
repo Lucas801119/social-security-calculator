@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     // 6. 插入新数据
     const { error: insertError } = await supabase
       .from('cities')
-      .insert(parseResult.data);
+      .insert(parseResult.data as any);
 
     if (insertError) {
       throw new Error(`插入数据失败: ${insertError.message}`);

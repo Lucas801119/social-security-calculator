@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       const batch = parseResult.data.slice(i, i + batchSize);
       const { error: insertError } = await supabase
         .from('salaries')
-        .insert(batch);
+        .insert(batch as any);
 
       if (insertError) {
         throw new Error(`插入数据失败: ${insertError.message}`);
