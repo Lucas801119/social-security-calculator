@@ -14,5 +14,14 @@ export function getSupabaseClient() {
   return createClient(supabaseUrl, supabaseAnonKey);
 }
 
-// 默认导出
-export const supabase = getSupabaseClient();
+// 延迟初始化的 Supabase 客户端
+let supabaseInstance: ReturnType<typeof createClient> | null = null;
+
+export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+  get(target, prop) {
+    if (!supabaseInstance) {
+      supabaseInstance = getSupabaseClient();
+    }
+    return (supabaseInstance as any)[prop];
+  }
+});
