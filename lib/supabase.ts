@@ -1,9 +1,9 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-let supabaseInstance: SupabaseClient | undefined;
+let supabaseInstance: ReturnType<typeof createClient> | undefined;
 
 // 获取 Supabase 客户端（延迟初始化）
-export function getSupabase(): SupabaseClient {
+export function getSupabase() {
   if (!supabaseInstance) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -20,9 +20,21 @@ export function getSupabase(): SupabaseClient {
   return supabaseInstance;
 }
 
-// 为了兼容性，导出 supabase 别名
-export const supabase = new Proxy({} as SupabaseClient, {
-  get(_target, prop) {
-    return (getSupabase() as any)[prop];
+// 向后兼容的导出 - 使用 getter 确保延迟执行
+export const supabase = {
+  get from() {
+    return getSupabase().from.bind(getSupabase());
+  },
+  get auth() {
+    return getSupabase().auth;
+  },
+  get storage() {
+    return getSupabase().storage;
+  },
+  get rpc() {
+    return getSupabase().rpc.bind(getSupabase());
+  },
+  get channel() {
+    return getSupabase().channel.bind(getSupabase());
   }
-});
+};
