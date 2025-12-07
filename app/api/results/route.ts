@@ -5,7 +5,7 @@ import type { ResultRecord } from '@/lib/types';
 export async function GET() {
   try {
     // 获取所有计算结果
-    const { data: results, error } = await supabase
+    const { data, error } = await supabase
       .from('results')
       .select('*')
       .order('employee_name', { ascending: true });
@@ -14,18 +14,18 @@ export async function GET() {
       throw new Error(`查询失败: ${error.message}`);
     }
 
-    // 类型断言
-    const typedResults = (results || []) as ResultRecord[];
+    // 使用更强的类型断言
+    const typedResults: ResultRecord[] = Array.isArray(data) ? data as ResultRecord[] : [];
 
     // 计算汇总信息
     const totalEmployees = typedResults.length;
-    const totalCompanyFee = typedResults.reduce(
-      (sum, r) => sum + Number(r.company_fee),
+    const totalCompanyFee = typedResults.reduce<number>(
+      (sum: number, r: ResultRecord) => sum + Number(r.company_fee),
       0
     );
 
-    const cityName = typedResults.length > 0 ? typedResults[0].city_name : '';
-    const year = typedResults.length > 0 ? typedResults[0].year : 0;
+    const cityName = typedResults.length > 0 ? String(typedResults[0].city_name) : '';
+    const year = typedResults.length > 0 ? Number(typedResults[0].year) : 0;
 
     return NextResponse.json({
       success: true,
